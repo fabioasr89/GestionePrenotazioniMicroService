@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Albergo-Stanze disponibili</title>
+	<script src="js/jQuery.js"></script>
+	<script src="js/dataTables.min.js"></script>
+	<link href="css/dataTab.css" rel="stylesheet">
+</head>
+<body>
+	<div class="">
+		<table class="display" id="dataResp">
+			<thead>
+				<tr>
+					<td>Codice stanza</td>
+					<td>Livello</td>
+					<td>Prezzo</td>
+					<td>Superficie</td>
+					<td>Disponibile</td>
+				</tr>
+			</thead>
+			<tbody>
+				
+			</tbody>
+
+		</table>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var table=$('#dataResp').DataTable({
+				 "language": {
+      				"emptyTable": "No data available in table"
+    				}
+			})
+			$.ajax({
+				dataType:'json',
+				type:'GET',
+				url:'http://localhost:8080//ApiPrenotazioni/getAllStanze',
+				success:function(xhr){
+					console.log(xhr);
+					if(xhr){
+						for(var i in xhr){
+							var codice=xhr[i].codiceStanza;
+							var livello=xhr[i].descrizione;
+							var prezzo=xhr[i].prezzo;
+							var disponibile=xhr[i].prenotata;
+							var superficie=xhr[i].superficie;
+							table.row.add([codice,livello,prezzo,superficie,disponibile]).draw(false);
+						}
+					}
+				},error:function(){
+					
+				}
+
+			})
+
+		})
+
+	</script>
+</body>
+
+</html>
